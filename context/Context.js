@@ -1,50 +1,83 @@
+
 import { createContext, useState, useEffect, } from "react";
 
 import { db } from "../components/firebase";
 import { onValue, ref } from "firebase/database";
 
-// Context to store state and pass it globally
+
 export const Createcart = createContext();
 
-// This component wraps its children with the context provider, making cart-related data and functions available to all nested component
 
 const Statestore = ({ children }) => {
-  //// . It checks the browser's localStorage for any existing cart items and parses
-  //them into an array. If no items are found, an empty array is used as the default value.
 
 
   
-  // gems store in local storage
-  const [cartItems, setCartItems] = useState(
-    localStorage.getItem("cartItems")
-      ? JSON.parse(localStorage.getItem("cartItems"))
-      : []
-  );
+  // const [cartItems, setCartItems] = useState(
+  //   localStorage.getItem("cartItems")
+  //     ? JSON.parse(localStorage.getItem("cartItems"))
+  //     : []
+  // );
 
-  // minerals store in local storage
-  const [mineralsCartItems, setMineralsCartItems] = useState(
-    localStorage.getItem("mineralsCartItems")
-      ? JSON.parse(localStorage.getItem("mineralsCartItems"))
-      : []
-  );
 
-  // specail offer in local storage
-  const [offerCartItems, setOfferCartItems] = useState(
-    localStorage.getItem("offerCartItems")
-      ? JSON.parse(localStorage.getItem("offerCartItems"))
-      : []
-  );
+  // const [mineralsCartItems, setMineralsCartItems] = useState(
+  //   localStorage.getItem("mineralsCartItems")
+  //     ? JSON.parse(localStorage.getItem("mineralsCartItems"))
+  //     : []
+  // );
 
-  // Trending products in local storage
+  // const [offerCartItems, setOfferCartItems] = useState(
+  //   localStorage.getItem("offerCartItems")
+  //     ? JSON.parse(localStorage.getItem("offerCartItems"))
+  //     : []
+  // );
 
-  const [trendingCartItems, setTrendingCartItems] = useState(
-    localStorage.getItem("trendingCartItems")
-      ? JSON.parse(localStorage.getItem("trendingCartItems"))
-      : []
-  );
 
-  // data calling from firebase
+  // const [trendingCartItems, setTrendingCartItems] = useState(
+  //   localStorage.getItem("trendingCartItems")
+  //     ? JSON.parse(localStorage.getItem("trendingCartItems"))
+  //     : []
+  // );
 
+
+
+    const [cartItems, setCartItems] = useState([])
+  const [mineralsCartItems, setMineralsCartItems] = useState([])
+  const [offerCartItems, setOfferCartItems] = useState([])
+  const [trendingCartItems, setTrendingCartItems] = useState([])
+  
+
+  // Helper function to safely access localStorage
+  const getFromLocalStorage = (key, defaultValue = []) => {
+    if (typeof window !== "undefined") {
+      try {
+        const item = localStorage.getItem(key)
+        return item ? JSON.parse(item) : defaultValue
+      } catch (error) {
+        console.error(`Error reading ${key} from localStorage:`, error)
+        return defaultValue
+      }
+    }
+    return defaultValue
+  }
+
+  // Helper function to safely set localStorage
+  const setToLocalStorage = (key, value) => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(key, JSON.stringify(value))
+      } catch (error) {
+        console.error(`Error setting ${key} to localStorage:`, error)
+      }
+    }
+  }
+
+  // Load data from localStorage after component mounts (client-side only)
+  useEffect(() => {
+    setCartItems(getFromLocalStorage("cartItems", []))
+    setMineralsCartItems(getFromLocalStorage("mineralsCartItems", []))
+    setOfferCartItems(getFromLocalStorage("offerCartItems", []))
+    setTrendingCartItems(getFromLocalStorage("trendingCartItems", []))
+  }, [])
 
 
   const [records, setRecords] = useState([]);
@@ -109,9 +142,23 @@ const Statestore = ({ children }) => {
     });
   }, []);
 
-  // This function, addToCart, is responsible for adding items to the cart. It first checks if the item already exists in the
-  // cart. If it does, the item's quantity is increased; otherwise, a new item with a quantity of 1 is added
 
+
+    useEffect(() => {
+    setToLocalStorage("cartItems", cartItems)
+  }, [cartItems])
+
+  useEffect(() => {
+    setToLocalStorage("mineralsCartItems", mineralsCartItems)
+  }, [mineralsCartItems])
+
+  useEffect(() => {
+    setToLocalStorage("offerCartItems", offerCartItems)
+  }, [offerCartItems])
+
+  useEffect(() => {
+    setToLocalStorage("trendingCartItems", trendingCartItems)
+  }, [trendingCartItems])
   // gems add to cart
   const addToCart = (item) => {
     const isItemInCart = cartItems.find((cartItem) => cartItem.key === item.key);
@@ -188,28 +235,11 @@ const Statestore = ({ children }) => {
     }
     localStorage.setItem("trendingCartItems", JSON.stringify(trendingCartItems));
   };
-  // const addToCardTrending = (item) => {
-  //   const isItemInCart = trendingCartItems.find(
-  //     (cartItem) => cartItem.key === item.key
-  //   );
+
   
-  //   if (isItemInCart) {
-  //     setTrendingCartItems(
-  //       trendingCartItems.map((cartItem) =>
-  //         cartItem.key === item.key
-  //           ? { ...cartItem, quantity: cartItem.quantity + 1 }
-  //           : cartItem
-  //       )
-  //     );
-  //   } else {
-  //     setTrendingCartItems([...trendingCartItems, { ...item, quantity: 1 }]);
-  //   }
-  
-  //   // Update the localStorage item with the updated cart items
-  //   localStorage.setItem("trendingCartItems", JSON.stringify(trendingCartItems));
-  // };
-  
-  
+
+
+
   // handles removing items from the cart. It checks if the item's quantity is 1;
   // if so, the item is completely removed from the cart. Otherwise, the item's quantity is decreased.
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -17,6 +18,10 @@ import { User, Heart, ShoppingCart, Search } from "lucide-react";
 
 import { Createcart } from "../context/Context";
 
+
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,6 +33,50 @@ const geistMono = Geist_Mono({
 });
 
 
+const categoryData = {
+  Gems: [
+    {
+      img: "https://new-basel2.myshopify.com/cdn/shop/products/woman-19_1_ddae4bc4-ea0f-4171-9e4f-fef91ce7908d@2x.jpg?v=1575433093",
+      tag: "WOMAN",
+      title: "NEW ARRIVALS",
+      color: "bg-yellow-400",
+    },
+    {
+      img: "/images/kid.png",
+      tag: "FOR STYLED",
+      title: "YOUNG MODEL",
+      color: "bg-blue-600",
+    },
+  ],
+  Mineral: [
+    {
+      img: "/images/man.png",
+      tag: "COLLECTION",
+      title: "MAN’S CASUAL",
+      color: "bg-red-600",
+    },
+    {
+      img: "/images/kid.png",
+      tag: "STYLISH",
+      title: "KIDS SPECIAL",
+      color: "bg-green-600",
+    },
+  ],
+  Trending: [
+    {
+      img: "/images/man.png",
+      tag: "TREND",
+      title: "HOT LOOK",
+      color: "bg-pink-600",
+    },
+    {
+      img: "/images/woman.png",
+      tag: "TOP PICK",
+      title: "LADIES' EDIT",
+      color: "bg-purple-600",
+    },
+  ],
+};
 
 export default function Home() {
 
@@ -174,7 +223,7 @@ export default function Home() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="relative w-1/3 h-[500px] overflow-hidden group cursor-pointer rounded-[2px]"  
+                className="relative w-1/3 h-[500px] overflow-hidden group cursor-pointer rounded-[2px]"
               >
                 {/* Overlay background color on hover */}
                 <div className="absolute inset-0 bg-[#00000066] opacity-0 group-hover:opacity-70 transition-opacity duration-500 z-10" />
@@ -209,76 +258,65 @@ export default function Home() {
         </div>
 
 
-        <div className="flex justify-center items-center gap-6 pt-8 py-4">
-          {["Gems", "Mineral", "Trending"].map((label) => (
-            <a
-              key={label}
-              href="#"
-              className="relative group text-gray-700 hover:text-black transition-colors duration-300"
-            >
-              {label}
-              <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 ease-out group-hover:w-full" />
-            </a>
-          ))}
-        </div>
 
 
+        <Tabs defaultValue="Gems" className="w-full">
+          {/* Tab Navigation */}
+          <TabsList className="flex justify-center items-center gap-6 pt-8 py-4">
+            {Object.keys(categoryData).map((label) => (
+              <TabsTrigger
+                key={label}
+                value={label}
+                className="relative group text-gray-700 hover:text-black transition-colors duration-300 text-lg"
+              >
+                {label}
+                <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 ease-out group-hover:w-full" />
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
+          {/* Tab Content */}
+          {Object.entries(categoryData).map(([key, items]) => (
+            <TabsContent key={key} value={key}>
+              <div className="flex flex-wrap gap-6 px-4 py-6">
+                {items.map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative w-full md:w-1/4 h-[400px] bg-gray-500 overflow-hidden group cursor-pointer"
+                  >
+                    {/* Background overlay */}
+                    <div className="absolute inset-0 bg-gray-200 bg-opacity-0 group-hover:bg-opacity-40 transition duration-500"></div>
 
-        {/* Category cards */}
-        <div className="flex flex-1 gap-6 px-4 py-6">
-          {[
-            {
-              img: "https://new-basel2.myshopify.com/cdn/shop/products/woman-19_1_ddae4bc4-ea0f-4171-9e4f-fef91ce7908d@2x.jpg?v=1575433093",
-              tag: "WOMAN",
-              title: "NEW ARRIVALS",
-              color: "bg-yellow-400",
-            },
-            {
-              img: "/images/kid.png",
-              tag: "FOR STYLED",
-              title: "YOUNG MODEL",
-              color: "bg-blue-600",
-            },
-            {
-              img: "/images/man.png",
-              tag: "COLLECTION",
-              title: "MAN’S CASUAL",
-              color: "bg-red-600",
-            },
-            {
-              img: "/images/man.png",
-              tag: "COLLECTION",
-              title: "MAN’S CASUAL",
-              color: "bg-red-600",
-            },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="relative w-1/4 h-[400px] bg-gray-500 overflow-hidden group cursor-pointer"
-            >
-              {/* Background overlay */}
-              <div className="absolute inset-0 bg-gray-200 bg-opacity-0 group-hover:bg-opacity-40 transition duration-500"></div>
+                    {/* Image with scale effect */}
+                    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-110">
+                      <img
+                        src={item.img}
+                        alt="category"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
 
-              {/* Image with scale effect */}
-              <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-110">
-                <img src={item.img} alt="nam" className="w-full h-full object-cover" />
+                    {/* Overlay content */}
+                    <div className="absolute bottom-6 left-6 text-white z-10">
+                      <span
+                        className={`text-xs px-2 py-1 font-semibold ${item.color} rounded-sm`}
+                      >
+                        {item.tag}
+                      </span>
+                      <h3 className="text-xl font-bold mt-2">{item.title}</h3>
+                      <p className="text-sm mb-2">
+                        Tincidunt nunc a mattis fames scelerisque fermentum.
+                      </p>
+                      <button className="text-white text-sm border-b border-white hover:text-gray-300">
+                        Read More
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-
-              <div className="absolute bottom-6 left-6 text-white z-10">
-                <span className={`text-xs px-2 py-1 font-semibold ${item.color} rounded-sm`}>
-                  {item.tag}
-                </span>
-                <h3 className="text-xl font-bold mt-2">{item.title}</h3>
-                <p className="text-sm mb-2">Tincidunt nunc a mattis fames scelerisque fermentum.</p>
-                <button className="text-white text-sm border-b border-white hover:text-gray-300">
-                  Read More
-                </button>
-              </div>
-            </div>
-
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
 
       </main>
 
