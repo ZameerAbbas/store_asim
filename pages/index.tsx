@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -95,15 +96,17 @@ export default function Home() {
   }, []);
 
 
-  const { records, cartItems, addToCart, removeFromCart } =
-    useContext(Createcart);
+  const { records, cartItems, addToCart, removeFromCart } = useContext(Createcart);
 
   console.log("records", records)
+
+  const [hovered, setHovered] = useState(false);
 
 
   return (
     <div
-      className={`${geistSans.className} ${geistMono.className}  `}
+      className={`${geistSans.className} ${geistMono.className}   `}
+      
     >
       <header className={`w-full border-b bg-white transition-all duration-500 ease-in-out ${isSticky
         ? "fixed top-0 z-50 shadow-md translate-y-0 opacity-100"
@@ -156,7 +159,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <main className="px-6 py-6">
+      <main className="px-12 py-6">
 
 
         <div className="flex">
@@ -167,35 +170,18 @@ export default function Home() {
             </h2>
             <ul className="space-y-3 text-sm">
               <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Womes Clothing</span> <span>&gt;</span>
+                <span>Gems</span> <span>&gt;</span>
               </li>
               <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Men Clothing</span> <span>&gt;</span>
+                <span>Minerals</span> <span>&gt;</span>
               </li>
               <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Watches</span> <span>&gt;</span>
+                <span>Trending</span> <span>&gt;</span>
               </li>
               <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Bags & Shoes</span> <span>&gt;</span>
+                <span>offers</span> <span>&gt;</span>
               </li>
-              <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Shoes</span> <span>&gt;</span>
-              </li>
-              <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Jewellery</span> <span>&gt;</span>
-              </li>
-              <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Accessories</span> <span>&gt;</span>
-              </li>
-              <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Toys, Kids & Baby</span> <span>&gt;</span>
-              </li>
-              <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Sports & Outdoors</span> <span>&gt;</span>
-              </li>
-              <li className="flex justify-between items-center cursor-pointer hover:text-gray-300">
-                <span>Health & Beauty</span> <span>&gt;</span>
-              </li>
+
             </ul>
           </aside>
 
@@ -203,19 +189,19 @@ export default function Home() {
           <div className="flex flex-1 gap-8 px-4 py-6">
             {[
               {
-                img: "https://new-basel2.myshopify.com/cdn/shop/products/woman-19_1_ddae4bc4-ea0f-4171-9e4f-fef91ce7908d@2x.jpg?v=1575433093",
+                img: "https://cdn.shopify.com/s/files/1/0133/1209/8368/files/Quartz_in_natural_crystal_form_480x480.jpg?v=1683220654",
                 tag: "Gems",
                 title: "NEW ARRIVALS",
                 color: "bg-yellow-400",
               },
               {
-                img: "https://new-basel2.myshopify.com/cdn/shop/products/woman-19_1_ddae4bc4-ea0f-4171-9e4f-fef91ce7908d@2x.jpg?v=1575433093",
+                img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fearthsongjewelry.com%2Fblogs%2Fnews%2Fminerals-stones-crystals-understanding-differences-in-gemstones%3Fsrsltid%3DAfmBOopGo4VtLmeSrdO9zCE3wxbyFH-7c2IEQwEKTvnWDU169stWwk_T&psig=AOvVaw3NVOrudTwsT9QFSLCphHdQ&ust=1753987239686000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCLC2n-Wd5Y4DFQAAAAAdAAAAABAE",
                 tag: "Minerals",
                 title: "YOUNG MODEL",
                 color: "bg-blue-600",
               },
               {
-                img: "https://new-basel2.myshopify.com/cdn/shop/products/woman-19_1_ddae4bc4-ea0f-4171-9e4f-fef91ce7908d@2x.jpg?v=1575433093",
+                img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fsaderatng.com%2Fprecious-stones-minerals-and-metals&psig=AOvVaw1msG-PV9lliQEcObkt6D-p&ust=1753987261123000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPj72fGd5Y4DFQAAAAAdAAAAABAE",
                 tag: "Trending",
                 title: "MAN’S CASUAL",
                 color: "bg-red-600",
@@ -263,59 +249,125 @@ export default function Home() {
         <Tabs defaultValue="Gems" className="w-full">
           {/* Tab Navigation */}
           <TabsList className="flex justify-center items-center gap-6 pt-8 py-4">
-            {Object.keys(categoryData).map((label) => (
-              <TabsTrigger
-                key={label}
-                value={label}
-                className="relative group text-gray-700 hover:text-black transition-colors duration-300 text-lg"
-              >
-                {label}
-                <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 ease-out group-hover:w-full" />
-              </TabsTrigger>
-            ))}
+         
+            <TabsTrigger
+              key={"Gems"}
+              value={"Gems"}
+              className="relative group text-gray-700 hover:text-black transition-colors duration-300 text-lg cursor-pointer"
+            >
+              {"Gems"}
+              <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 ease-out group-hover:w-full" />
+            </TabsTrigger>
+            <TabsTrigger
+              key={"Minerals"}
+              value={"Minerals"}
+              className="relative group text-gray-700 hover:text-black transition-colors duration-300 text-lg cursor-pointer"
+            >
+              {"Minerals"}
+              <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 ease-out group-hover:w-full" />
+            </TabsTrigger>
+            <TabsTrigger
+              key={"Trending"}
+              value={"Trending"}
+              className="relative group text-gray-700 hover:text-black transition-colors duration-300 text-lg cursor-pointer"
+            >
+              {"Trending"}
+              <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 ease-out group-hover:w-full" />
+            </TabsTrigger>
+        
           </TabsList>
 
           {/* Tab Content */}
-          {Object.entries(categoryData).map(([key, items]) => (
-            <TabsContent key={key} value={key}>
-              <div className="flex flex-wrap gap-6 px-4 py-6">
-                {items.map((item, index) => (
-                  <div
-                    key={index}
-                    className="relative w-full md:w-1/4 h-[400px] bg-gray-500 overflow-hidden group cursor-pointer"
+
+          <TabsContent key={"Gems"} value={"Gems"}>
+            <div className="flex flex-wrap gap-6 px-4 py-6">
+              {records.map((item: any, index: any) => (
+                <div
+                  key={index}
+                  className="group cursor-pointer w-full md:w-[320px] max-w-[320px] bg-white shadow-md rounded overflow-hidden"
+                >
+                  {/* Image with hover scale */}
+                  <div className="overflow-hidden"
+
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
                   >
-                    {/* Background overlay */}
-                    <div className="absolute inset-0 bg-gray-200 bg-opacity-0 group-hover:bg-opacity-40 transition duration-500"></div>
+                    <img
+                      src={ hovered ? item.data.gemImageURL :  item.data.gemImageURLT}
+                      alt="category"
+                      className="w-full h-[380px] object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
 
-                    {/* Image with scale effect */}
-                    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-110">
-                      <img
-                        src={item.img}
-                        alt="category"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
 
-                    {/* Overlay content */}
-                    <div className="absolute bottom-6 left-6 text-white z-10">
-                      <span
-                        className={`text-xs px-2 py-1 font-semibold ${item.color} rounded-sm`}
-                      >
-                        {item.tag}
-                      </span>
-                      <h3 className="text-xl font-bold mt-2">{item.title}</h3>
-                      <p className="text-sm mb-2">
-                        Tincidunt nunc a mattis fames scelerisque fermentum.
-                      </p>
-                      <button className="text-white text-sm border-b border-white hover:text-gray-300">
-                        Read More
-                      </button>
+                  </div>
+
+                  {/* Details */}
+                  <div className="p-4">
+                    <h3 className="text-base font-semibold text-gray-800 mb-1">
+                      {item.data.gemName || 'Eong leeve allover'}
+                    </h3>
+
+                    <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">
+                      {item.data.gemOrigin || 'Basel'}
+                    </p>
+
+                    <p className="text-sm font-semibold text-gray-800 mb-3">
+                      ${item.data.gemPrice || '120.00'}
+                    </p>
+
+                    {/* Color dots */}
+                    <div className="flex gap-2">
+                      <span className="w-3 h-3 bg-green-600 rounded-full"></span>
+                      <span className="w-3 h-3 bg-red-600 rounded-full"></span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </TabsContent>
-          ))}
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+          <TabsContent key={"Minerals"} value={"Minerals"}>
+            <div className="flex flex-wrap gap-6 px-4 py-6">
+              {records.map((item: any, index: any) => (
+                <div
+                  key={index}
+                  className="group cursor-pointer w-full md:w-[320px] max-w-[320px] bg-white shadow-md rounded overflow-hidden"
+                >
+                  {/* Image with hover scale */}
+                  <div className="overflow-hidden">
+                    <img
+                      src={item.data.gemImageURL}
+                      alt="category"
+                      className="w-full h-[380px] object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
+
+                  {/* Details */}
+                  <div className="p-4">
+                    <h3 className="text-base font-semibold text-gray-800 mb-1">
+                      {item.data.gemName || 'Eong leeve allover'}
+                    </h3>
+
+                    <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">
+                      {item.data.gemOrigin || 'Basel'}
+                    </p>
+
+                    <p className="text-sm font-semibold text-gray-800 mb-3">
+                      ${item.data.gemPrice || '120.00'}
+                    </p>
+
+                    {/* Color dots */}
+                    <div className="flex gap-2">
+                      <span className="w-3 h-3 bg-green-600 rounded-full"></span>
+                      <span className="w-3 h-3 bg-red-600 rounded-full"></span>
+                    </div>
+                  </div>
+                </div>
+
+              ))}
+            </div>
+          </TabsContent>
+
+
         </Tabs>
 
       </main>
